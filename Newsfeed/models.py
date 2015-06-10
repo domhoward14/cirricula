@@ -1,75 +1,70 @@
 from django.db import models
 
-class admin_login (models.Model):
-    username = models.CharField(max_length = 30)
-    password = models.CharField(max_length = 30)
-    def __unicode__(self):
-        return self.username
-
-#This is a relational table for lesson and course
-class comment (models.Model):
-    #make relation to course id
-    models.ForeignKey(course)
-    #make relation to lesson id
-    models.ForeignKey(lesson)
-    #make relation to people id
-    models.ForeignKey(People)
-#parent_id identifies what comment it came from.
-    parent_id = models.IntegerField()
-    comment_text = models.CharField(max_length = 100)
-    status = models.CharField(max_length = 10)
-    def __unicode__(self):
-        return self.id
-
-class newsfeed (models.Model):
-    #relation to commentid
-    #relation to peopleid
+class ratings (models.Model):
+    people = models.ForeignKey('People')
+    comment = models.ForeignKey('comment')
     like = models.CharField(max_length=10)
     rate = models.IntegerField()
     def __unicode__(self):
         return self.id
-
-#this is a relationship table
-class PeopleCourse(models.Model):
-    #foreign key to people_id
-    peopleId = models.ForeignKey(People)
-    #foreign key to course_id
-    foreignKey = models.ForeignKey(course)
-    recommended = models.CharField(max_length=10)
-    my_Wish_list = models.CharField(max_length=10)
-    def __unicode__(self):
-        self.id
-
-#This may need to be created in the authentication page
-class People (models.Model):
-    role = models.CharField(max_length=20)
-    first_name = models.CharField(max_length=45)
-    last_name = models.CharField(max_length=45)
-    email = models.CharField(max_length=25)
-    #password cannot be stored in plain text
-    phone_number = models.IntegerField()
-    peopleCourse = models.ManyToManyField(course, through=PeopleCourse)
-    def __unicode__(self):
-        self.first_name
 
 class course (models.Model):
     course_name = models.CharField(max_length=45)
     courseDesc = models.CharField(max_length=100)
     courseFee = models.IntegerField()
     createdTS = models.DateTimeField(auto_now_add= True)
-    course_id = models.IntegerField()
+    course_id = models.IntegerField(primary_key=True, unique=True)
+    hideBit = models.IntegerField(max_length=1, default=0)
     def __unicode__(self):
-        self.course_name
+        return self.course_name
 
 class lesson (models.Model):
-    #relation to course id
     lesson_name = models.CharField(max_length=45)
     lessonDesc = models.CharField(max_length=100)
     lessonPre = models.CharField(max_length=100)
     createdTS = models.DateTimeField(auto_now_add=True)
-    course_id = models.IntegerField()
+    course = models.ForeignKey(course)
+    hideBit = models.IntegerField(max_length=1, default=0)
     def __unicode__(self):
-        self.lesson_name
+        return self.lesson_name
+
+class People (models.Model):
+    role = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=45)
+    last_name = models.CharField(max_length=45)
+    email = models.EmailField(max_length=75, unique=True)
+    phone_number = models.IntegerField()
+    hideBit = models.IntegerField(max_length=1, default=0)
+    isActive = models.IntegerField(max_length=1, default=0)
+    def __unicode__(self):
+        return self.first_name
+
+class PeopleCourse(models.Model):
+    peopleId = models.ForeignKey(People)
+    course = models.ForeignKey(course)
+    def __unicode__(self):
+        return self.id
+
+class reccommendedList(models.Model):
+    student = models.ForeignKey(People)
+    recommendedClass = models.ForeignKey(course)
+    def __unicode__(self):
+        return self.recommendedClass
+
+class wishList(models.Model):
+    student = models.ForeignKey(People)
+    wishListClass = models.ForeignKey(course)
+    def __unicode__(self):
+        return self.recommendedClass
+
+class comment (models.Model):
+    parentId = models.ForeignKey('self', null=True)
+    course = models.ForeignKey(course, null=True)
+    lesson = models.ForeignKey(lesson, null=True)
+    comment_text = models.CharField(max_length = 100, default='default')
+    hideBit = models.IntegerField(max_length=1, default=0)
+    def __unicode__(self):
+        return self.id
 
 
 
