@@ -1,6 +1,10 @@
 from django.contrib import admin
-from Newsfeed.models import admin_login, comment
+from Newsfeed.models import *
 
 admin.site.register(comment)
-admin.site.register(admin_login)
-
+admin.site.register(ratings)
+admin.site.register(lesson)
+admin.site.register(course)
+admin.site.register(People)
+admin.site.register(tempReccommendedList)
+admin.site.register(PeopleCourse)
