@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Admin Dashboard</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -24,6 +24,8 @@
                         </h1>
                     </div>
                 </div>
+            </div>
+     </div>
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -36,20 +38,24 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+            </div>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li>
-                        <a href="/admin"><i class="fa fa-fw fa-dashboard"></i> Find Classes</a>
+                   <li>
+                        <a href="/newsfeed/viewAllClasses.html"><i class="fa fa-fw fa-dashboard"></i> Find Classes</a>
                     </li>
                     <li>
-                        <a href="/admin"><i class="fa fa-fw fa-bar-chart-o"></i> Make Recommendations</a>
+                        <a href="/newsfeed/recommendCourse.html/"><i class="fa fa-fw fa-bar-chart-o"></i> Make Recommendations</a>
                     </li>
                     <li>
-                        <a href="/admin"><i class="fa fa-fw fa-edit"></i> User Settings</a>
+                        <a href="/newsfeed/viewMembers.html"><i class="fa fa-fw fa-edit"></i> View All Members</a>
                     </li>
                     <li>
                         <a href="/admin"><i class="fa fa-fw fa-dashboard"></i> Delete/Add Classes</a>
+                    </li>
+                    <li>
+                        <a href="/newsfeed/recommendLesson.html"><i class="fa fa-fw fa-edit"></i> Make Lesson Recommendations</a>
                     </li>
                     <li>
                         <a href="/admin"><i class="fa fa-fw fa-dashboard"></i> Delete/Add Teacher</a>
@@ -72,85 +78,102 @@
     </br>
     <div class="container">
         <div class="row">
-            <div class="col-sm-6">
-                <h1> All Active Students  </h1>
+            <div class="col-sm-12">
+                <h1>
+                    Pending Classes
+                </h1>
             </div>
-            <div class="col-sm-6">
-                <h1> All Active Professors  </h1>
+            <div class="col-sm-12">
+                {% if courses %}
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Course Id</th>
+                            <th>Course Name</th>
+                            <th>Semester</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for course in courses %}
+                              <tr>
+                                <td>{{ course.course_id }}</td>
+                                <td>{{ course.course_name }}</td>
+                                <td>Fall</td>
+                              </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+            {% else %}
+                <strong>Currently No Classes Pending</strong>
+            {% endif %}
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Course Id</th>
-                        <th>Professor</th>
-                        <th>Semester</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>123</td>
-                        <td>Dr. Phillips</td>
-                        <td>Fall</td>
-                      </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-sm-6">
-                <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Course Id</th>
-                        <th>Professor</th>
-                        <th>Semester</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>123</td>
-                        <td>Dr. Phillips</td>
-                        <td>Fall</td>
-                      </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h1> Recommendations Pending  </h1>
+                <h1>
+                    Pending Lessons
+                </h1>
+            </div>
+            <div class="col-sm-12">
+                {% if lessons %}
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Course</th>
+                            <th>Lesson Name</th>
+                            <th>Semester</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for lesson in lessons %}
+                              <tr>
+                                {% if lesson.courseString != "null" %}
+                                <td>{{ lesson.courseString}}</td>
+                                {% else %}
+                                <td>{{ lesson.course.course_name}}</td>
+                                {% endif %}
+                                <td>{{ lesson.lesson_name }}</td>
+                                <td>Fall</td>
+                              </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+            {% else %}
+                <strong>Currently No Lessons Pending</strong>
+            {% endif %}
             </div>
         </div>
     </div>
-
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Course Id</th>
-                        <th>Professor</th>
-                        <th>Semester</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>123</td>
-                        <td>Dr. Phillips</td>
-                        <td>Fall</td>
-                      </tr>
-                    </tbody>
-                </table>
+                <h1>
+                    Graph 1
+                </h1>
+            </div>
+            <div class="col-sm-12">
+                [Insert Graph here !]
+            </div>
+            <div class="col-sm-12">
+                <h1>
+                    Graph 2
+                </h1>
+            </div>
+            <div class="col-sm-12">
+                [Insert Graph here !]
+            </div>
+            <div class="col-sm-12">
+                <h1>
+                    Graph 3
+                </h1>
+            </div>
+            <div class="col-sm-12">
+                [Insert Graph here !]
             </div>
         </div>
     </div>
-
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 

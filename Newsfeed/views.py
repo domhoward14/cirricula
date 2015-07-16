@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from Newsfeed.forms import *
 from Newsfeed.models import *
+from django.http import HttpResponseRedirect
 
 def index(request):
     return render(request, 'Login.html')
@@ -16,7 +16,7 @@ def addNewUser(request):
         if form.is_valid():
             form.save(commit=True)
 
-            return homePage(request)
+            return render(request, 'success.html/')
 
         else:
             print form.errors
@@ -31,7 +31,7 @@ def makeRecomendations(request):
 
         if form.is_valid():
             form.save(commit=True)
-            return homePage(request)
+            return render(request, 'success.html/')
 
         else:
             print form.errors
@@ -40,10 +40,35 @@ def makeRecomendations(request):
 
     return render(request, 'recommendCourse.html', {'form':form})
 
+def recLesson(request):
+
+    if request.method == 'POST':
+        form = recommendedLessons(request.POST)
+
+        if form.is_valid():
+            form.save(commit=True)
+            return render(request, 'success.html')
+
+        else:
+            print form.errors
+    else:
+        form = recommendedLessons()
+        return render(request, 'recommendLesson.html', {'form': form})
+
+
+
+
+
+
 def student(request):
-    courses = course.objects.all()
+    courses = course.objects.order_by('-likes')
+    courses = courses.filter(hideBit=0)
+    courses = courses[:5]
     people = People.objects.filter(role="Professor")
-    context_dict = {'courses':courses, 'people':people}
+    people = people[:5]
+    lessons = lesson.objects.order_by('-likes')
+    lessons = lessons[:5]
+    context_dict = {'courses':courses, 'people':people, 'lessons':lessons}
     return render(request, 'studentPage.html', context_dict)
 
 def professor(request):
@@ -52,4 +77,25 @@ def professor(request):
     return render(request, 'professorsPage.html')
 
 def admin(request):
-    return render(request, 'adminPage.html')
+    courses = course.objects.filter(hideBit = 1)
+    lessons = lesson.objects.filter(hideBit = 1)
+    context_dict = {'courses':courses, 'lessons':lessons}
+    return render(request, 'adminPage.html', context_dict)
+
+def allClasses(request):
+    courses = course.objects.filter(hideBit = 0)
+    context_dict = {'courses':courses}
+    return render(request, 'viewAllClasses.html', context_dict)
+
+def allMembers(request):
+    students = People.objects.filter(role='Student')
+    professors = People.objects.filter(role='Professor')
+    context_dict = {'students':students, 'professors':professors}
+    return render(request, 'viewMembers.html', context_dict)
+
+def success(request):
+    return render(request, 'success.html')
+
+
+
+

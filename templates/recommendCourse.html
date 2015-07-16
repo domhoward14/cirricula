@@ -10,7 +10,18 @@
 </head>
 <body>
     <div id="wrapper">
-
+        <div class="container-fluid">
+                <!-- Page Heading -->
+                <div class="row">
+                    </br>
+                    </br>
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Recommend A Course !
+                        </h1>
+                    </div>
+                </div>
+            </div>
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -25,13 +36,13 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li>
-                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Find Classes</a>
+                        <a href="/newsfeed/viewAllClasses.html"><i class="fa fa-fw fa-dashboard"></i> Find Classes</a>
                     </li>
                     <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Make Recommendations</a>
+                        <a href="/newsfeed/recommendCourse.html/"><i class="fa fa-fw fa-bar-chart-o"></i> Make Course Recommendations</a>
                     </li>
                     <li>
-                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i> User Settings</a>
+                        <a href="/newsfeed/recommendLesson.html"><i class="fa fa-fw fa-edit"></i> Make Lesson Recommendations</a>
                     </li>
                     <li>
                         <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Log Out</a>
@@ -43,14 +54,7 @@
     </div>
     </br>
     </br>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 text-center"><h1>Make Course Recommendations !</h1></div>
-        </div>
-    </div>
     </class>
-
-
     <form id="RecommendForm" method="post" action="/newsfeed/recommendCourse.html/">
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}
